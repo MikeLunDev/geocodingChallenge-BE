@@ -18,7 +18,7 @@ switch (process.env.NODE_ENV) {
     connectDbUri = "mongodb://localhost:27017/markersdb";
     break;
   case "production":
-    connectDbUri = "cloud atlas link";
+    connectDbUri = process.env.CONNECT_STRING_DB;
     break;
   default:
     connectDbUri = "mongodb://localhost:27017/developdb";
