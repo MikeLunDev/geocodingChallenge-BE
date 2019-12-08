@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const app = expess();
 
-app.set("port", 3055 || process.env.PORT);
+app.set("port",process.env.PORT || 3055 );
 app.use(expess.json());
 var whitelist = ['https://geocoding-markers-fe.herokuapp.com','http://localhost:3000']
 var corsOptions = {
