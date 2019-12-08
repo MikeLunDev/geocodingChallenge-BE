@@ -6,8 +6,17 @@ const app = expess();
 
 app.set("port", 3055 || process.env.PORT);
 app.use(expess.json());
-app.use(cors());
-app.use("/markers", markerRouter);
+var whitelist = ['https://geocoding-markers-fe.herokuapp.com','http://localhost:3015']
+var corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true)
+    } else {
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
+app.use("/markers",cors(corsOptions), markerRouter);
 let connectDbUri;
 
 switch (process.env.NODE_ENV) {
