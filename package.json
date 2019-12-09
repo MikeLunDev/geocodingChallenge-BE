@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development nodemon ./server.js",
-    "test": "cross-env NODE_ENV=test jest --testTimeout=8000 --runInBand --detectOpenHandles --forceExit"
+    "test": "cross-env NODE_ENV=test jest --testTimeout=8000 --runInBand --detectOpenHandles"
   },
   "keywords": [],
   "author": "",

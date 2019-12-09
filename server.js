@@ -45,6 +45,7 @@ mongoose
   })
   .then(conn => {
     console.log("connected with", connectDbUri);
+    console.log("url whitelisted",process.env.WHITE_LIST_ONLINE)
   })
   .catch(error => {
     console.log(error);
