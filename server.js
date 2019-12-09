@@ -9,7 +9,7 @@ app.set("port",process.env.PORT || 3055 );
 app.use(expess.json());
 
 //white list for cors()
-var whitelist = [process.env.WHITE_LIST_ONLINE,process.env.WHITE_LIST_LOCAL]
+var whitelist = ["https://geocoding-markers-fe.herokuapp.com","http://localhost:3000"]
 var corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
