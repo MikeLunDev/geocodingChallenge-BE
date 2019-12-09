@@ -2,11 +2,14 @@ const expess = require("express");
 const markerRouter = require("./routes/markerRouter");
 const mongoose = require("mongoose");
 const cors = require("cors");
+require("dotenv").config()
 const app = expess();
 
 app.set("port",process.env.PORT || 3055 );
 app.use(expess.json());
-var whitelist = ['https://geocoding-markers-fe.herokuapp.com','http://localhost:3000']
+
+//white list for cors()
+var whitelist = [process.env.WHITE_LIST_ONLINE,process.env.WHITE_LIST_LOCAL]
 var corsOptions = {
   origin: function (origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
@@ -46,8 +49,9 @@ mongoose
   .catch(error => {
     console.log(error);
   });
-app.listen(app.get("port"), () => {
-  console.log("running on", app.get("port"));
-});
-
+  var connection = mongoose.connection
+  connection.once("open",function(){
+  app.listen(app.get("port"), () => {
+    console.log("running on", app.get("port"));
+  }) })
 module.exports = { app };

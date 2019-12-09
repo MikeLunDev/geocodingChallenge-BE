@@ -1,6 +1,8 @@
 const request = require("supertest");
 const { app } = require("../server");
+const Marker = require("../models/markerSchema")
 const mongoose = require("mongoose");
+require("dotenv").config()
 
 const newMarker = {
   address: "Berlin, Germany",
@@ -15,13 +17,8 @@ const editedMarker = {
 
 var newId;
 
-afterAll(() => {
-  var conn = mongoose.connection;
-  //delete the testdb after testing
-  conn.on("error", err => {
-    console.log("errors in the connection", err);
-  });
-  conn.db.dropDatabase();
+beforeAll(async () => {
+ await Marker.deleteMany({})
 });
 
 //Custom type-checking without third party libraries
@@ -49,18 +46,21 @@ expect.extend({
 post = (url, body) => {
   const httpRequest = request(app).post(url);
   httpRequest.set("Accept", "application/json");
+  httpRequest.set("Origin",process.env.WHITE_LIST_LOCAL)
   httpRequest.send(body);
   return httpRequest;
 };
 
 httpDelete = url => {
   const httpRequest = request(app).delete(url);
+  httpRequest.set("Origin",process.env.WHITE_LIST_LOCAL)
   return httpRequest;
 };
 
 put = (url, body) => {
   const httpRequest = request(app).put(url);
   httpRequest.set("Accept", "application/json");
+  httpRequest.set("Origin",process.env.WHITE_LIST_LOCAL)
   httpRequest.send(body);
   return httpRequest;
 };
@@ -68,6 +68,7 @@ put = (url, body) => {
 get = url => {
   const httpRequest = request(app).get(url);
   httpRequest.set("Accept", "application/json");
+  httpRequest.set("Origin",process.env.WHITE_LIST_LOCAL)
   return httpRequest;
 };
 
@@ -244,7 +245,6 @@ describe("Markers route", () => {
   });
 
   test("DELETE - /markers/:markersId should delete Marker", async () => {
-    console.log(newId);
     let response = await httpDelete(`/markers/${newId}`)
       .expect("Content-Type", /json/)
       .expect(200);

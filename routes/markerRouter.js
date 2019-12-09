@@ -2,10 +2,12 @@ const express = require("express");
 const Marker = require("../models/markerSchema");
 const router = express.Router();
 
+//get all the markers on the db
 router.get("/", async (req, res) => {
   res.send(await Marker.find({}));
 });
 
+//create a new markers on the db
 router.post("/", async (req, res) => {
   try {
     var newMarker = await Marker.create(req.body);
@@ -24,6 +26,7 @@ router.post("/", async (req, res) => {
   }
 });
 
+//delete a markers based on id
 router.delete("/:markerId", async (req, res) => {
   try {
     let marker = await Marker.findByIdAndDelete(req.params.markerId);
@@ -49,6 +52,7 @@ router.delete("/:markerId", async (req, res) => {
   }
 });
 
+//edit a marker based on id
 router.put("/:markerId", async (req, res) => {
   const { address, lat, lng } = req.body;
   if (address != undefined && lat != undefined && lng != undefined) {
