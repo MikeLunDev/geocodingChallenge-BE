@@ -5,7 +5,7 @@ const cors = require("cors");
 require("dotenv").config()
 const app = expess();
 
-app.set("port",process.env.PORT || 3055 );
+app.set("port", process.env.PORT || 3055 );
 app.use(expess.json());
 
 //white list for cors()
