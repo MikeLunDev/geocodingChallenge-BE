@@ -2,24 +2,24 @@ const expess = require("express");
 const markerRouter = require("./routes/markerRouter");
 const mongoose = require("mongoose");
 const cors = require("cors");
-require("dotenv").config()
+require("dotenv").config();
 const app = expess();
 
-app.set("port", process.env.PORT || 3055 );
+app.set("port", process.env.PORT || 3055);
 app.use(expess.json());
 
 //white list for cors()
-var whitelist = ["https://geocoding-markers-fe.herokuapp.com","http://localhost:3000"]
+var whitelist = [process.env.WHITE_LIST_ONLINE, process.env.WHITE_LIST_LOCAL];
 var corsOptions = {
-  origin: function (origin, callback) {
+  origin: function(origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
-      callback(null, true)
+      callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'))
+      callback(new Error("Not allowed by CORS"));
     }
   }
-}
-app.use("/markers",cors(corsOptions), markerRouter);
+};
+app.use("/markers", cors(corsOptions), markerRouter);
 let connectDbUri;
 
 switch (process.env.NODE_ENV) {
@@ -49,9 +49,10 @@ mongoose
   .catch(error => {
     console.log(error);
   });
-  var connection = mongoose.connection
-  connection.once("open",function(){
+var connection = mongoose.connection;
+connection.once("open", function() {
   app.listen(app.get("port"), () => {
     console.log("running on", app.get("port"));
-  }) })
+  });
+});
 module.exports = { app };
