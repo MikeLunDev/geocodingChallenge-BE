@@ -27,7 +27,7 @@ mongod
 
 **Create a .env file with:**
 
-- CONNECT_STRING_DB // will be the the mongo atlas connect string
+- CONNECT_STRING_DB // will be the the mongo atlas connection string
 - WHITE_LIST_ONLINE //address online that is whitelisted by cors() (not mandatory)
 - WHITE_LIST_LOCAL //localhost address that is whitelisted by cors() (not mandatory)
 
