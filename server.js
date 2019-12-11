@@ -2,10 +2,16 @@ const expess = require("express");
 const markerRouter = require("./routes/markerRouter");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const YAML = require("yamljs");
+const swaggerUI = require("swagger-ui-express");
+const {join} = require("path")
 require("dotenv").config();
 const app = expess();
 
+const swaggerDocument = YAML.load(join(__dirname, "./apidocs.yaml"));
+
 app.set("port", process.env.PORT || 3055);
+app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 app.use(expess.json());
 
 //white list for cors()

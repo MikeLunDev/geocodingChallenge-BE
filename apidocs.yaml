@@ -1,0 +1,218 @@
+openapi: 3.0.1
+info:
+ title: Geocode Api Back End
+ description: <p style="color:darkcyan; font-size:20px; font-weight:600">Coding Challenge for medwing</p><ul style="list-style-type:square"><li style="color:black; font-size:18px; font-weight:600; cursor:pointer"><a href="https://geocoding-markers-fe.herokuapp.com/">FULL WEBSITE LIVE DEMO</a></li><li style="color:black; font-size:18px; font-weight:600; cursor:pointer"><a href="https://github.com/MikeLunDev/geocodingChallenge-FE">GITHUB REPO FRONT END</a></li><li style="color:black; font-size:18px; font-weight:600; cursor:pointer"><a href="https://github.com/MikeLunDev/geocodingChallenge-BE">GITHUB REPO BACK END</a></li></ul>
+ version: 1.0.0
+servers:
+ - url: http://localhost:3055
+   description: Local Host
+ - url: https://geocoding-markers-be.herokuapp.com/
+   description: Hosted Server
+tags:
+  - name: markers
+    description: <p style="color:#545456; font-size:18px; font-weight:600; padding-top:3px"> Markers CRUD operations</p>
+paths:
+  /markers:
+    get:
+      tags:
+        - markers
+      summary: Returns the markers list
+      description: <p style="color:blue; font-size:16px; font-weight:600">Get all the markers from the db</p>
+      responses:
+        '200':    # status code
+          description: <p style="color:green; font-size:16px; font-weight:600"> Successfully retreived a JSON array of markers from the db</p>
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  $ref: '#/components/schemas/Markers'
+              example:
+               - _id: 5df0cb9d4cc5da470cca7ce6
+                 address: 'Matera, Basilicata, Italy'
+                 lat: 40.666668
+                 lng: 16.6
+                 createdAt: '2019-12-11T10:57:33.521Z'
+                 updatedAt: '2019-12-11T10:57:33.521Z'
+                 __v: 
+    post:
+      tags:
+        - markers
+      summary: Creates a new Marker on the DB
+      description: <p style="color:blue; font-size:16px; font-weight:600">Creates a new Marker on the DB</p>
+      parameters: 
+        - in: header
+          name: Origin
+          schema:
+            type: string
+          required: true
+          description: Set it to "http://localhost:3000" to not get blocked by cors
+      requestBody:
+        description: Markers field
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Markers'
+      responses:
+        '201':    # status code
+          description: <p style="color:green; font-size:16px; font-weight:600"> Successfully retreived a JSON array of markers from the db</p>
+          content:
+            application/json:
+              schema: 
+                type: array
+                items: 
+                  $ref: '#/components/schemas/Markers'
+              example:
+               - _id: 5df0cb9d4cc5da470cca7ce6
+                 address: 'Matera, Basilicata, Italy'
+                 lat: 40.666668
+                 lng: 16.6
+                 createdAt: '2019-12-11T10:57:33.521Z'
+                 updatedAt: '2019-12-11T10:57:33.521Z'
+                 __v: 0
+        '400':
+           $ref: '#/components/responses/BadRequest'
+           
+  /markers/{markerId}:
+    put:
+      tags:
+       - markers
+      summary: Modify the markers info selecting one by Id
+      description: <p style="color:blue; font-size:16px; font-weight:600">Select a marker on the DB by Id, and if the request body contains necessary field modify the element.</p>
+      parameters: 
+        - in: path
+          name: markerId 
+          schema:
+            type: string
+          required: true
+          description: Id of the marker to modify
+        - in: header
+          name: Origin
+          schema:
+            type: string
+          required: true
+          description: Set it to "http://localhost:3000" to not get blocked by cors
+      requestBody:
+        description: Fields of the markers to update
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Markers'
+      responses:
+        '200':    # status code
+          description: <p style="color:green; font-size:16px; font-weight:600"> Returns a JSON object of the modified marker and of the error. All the fields that are not in the schema are server/db generated.</p>
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Markers'
+                  - $ref: '#/components/schemas/Error'
+              example: 
+               error: ''
+               status: Successfully updated
+               success: true
+               newMarker:
+                 _id: 5df0cc134cc5da470cca7ce7
+                 address: 'Matera, Basilicata, Italy'
+                 lat: 40.666667
+                 lng: 16.6
+                 createdAt: '2019-12-11T10:59:31.516Z'
+                 updatedAt: '2019-12-11T11:14:02.154Z'
+                 __v: 0
+               
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    delete:
+      tags:
+       - markers
+      summary: Delete the marker selecting one by Id
+      description: <p style="color:blue; font-size:16px; font-weight:600">Select a marker on the DB by ID, and if found deletes it.</p>
+      parameters: 
+        - in: path
+          name: markerId 
+          schema:
+            type: string
+          required: true
+          description: Id of the marker to modify
+        - in: header
+          name: Origin
+          schema:
+            type: string
+          required: true
+          description: Set it to "http://localhost:3000" to not get blocked by cors
+      responses:
+        '200':    # status code
+          description: <p style="color:green; font-size:16px; font-weight:600"> Returns a JSON object with the Error schema and the deleted marker's ID. All the fields that are not in the schema are server/db generated.</p>
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Error'
+                  - type: object
+                    properties:
+                      deletedMarkerId:
+                        type: string
+              example: 
+               error: ''
+               status: Successfully deleted
+               success: true
+               deletedMarkerId: 5df0cb9d4cc5da470cca7ce6
+               
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalError'
+components:
+  responses:
+    NotFound:
+      description: <p style="color:red; font-size:16px; font-weight:600"> Returned when the searched resource on the db is not found</p>
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: 'Not found. Check if the markerId is correct and if the marker exists'
+            status: 'Couldn''t update/delete item with id 5df0cc134cc5da470cca7ce4, internal error'
+            success: false
+    BadRequest:
+      description: <p style="color:red; font-size:16px; font-weight:600">Returned when the request is not correct.</p>
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: 'marker validation failed...'
+            status: "Couldn't create new resource"
+            success: false
+    InternalError:
+      description: <p style="color:red; font-size:16px; font-weight:600">Returned when internal server error occurs like failing to cast id to ObjectID.</p>
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+           error: "Cast to ObjectId failed for value 5df0cb9d4cc5da470cca7ce at path '_id' for model marker"
+           status: "Couldn't delete/update item with id 5df0cb9d4cc5da470cca7ce, internal error."
+           success: false
+  schemas:
+    Markers:  # Marker definition
+      type: object
+      properties:
+        address:
+          type: string
+        lat: 
+          type: number
+        lng: 
+          type: number
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        status:
+          type: string
+        success:
+          type: boolean
+          

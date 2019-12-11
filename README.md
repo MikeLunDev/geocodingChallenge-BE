@@ -61,6 +61,12 @@ npm run test
 * [NodeJs](https://nodejs.org/it/)
 * [Express](https://www.npmjs.com/package/express) 
 
+## DOCS
+
+Docs can be found [HERE](https://geocoding-markers-be.herokuapp.com/docs).
+They are written with OpenApi 3.0.1 leveraging on [swagger-ui-express](https://www.npmjs.com/package/swagger-ui-express) and [yamljs](https://www.npmjs.com/package/yamljs) used to run yaml file in a NodeJs environment.
+
+
 ## Author
 
 [Michele Lunati](https://github.com/MikeLunDev)
