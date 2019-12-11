@@ -45,6 +45,7 @@ mongoose
   })
   .then(conn => {
     console.log("connected with", connectDbUri);
+    console.log(process.env.WHITE_LIST_ONLINE,process.env.WHITE_LIST_LOCAL)
   })
   .catch(error => {
     console.log(error);
