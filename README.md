@@ -1,13 +1,13 @@
 # Project Title
 
 Back end of the coding challenge for Medwing.
-Front end repository [HERE](https://github.com/MikeLunDev/geocodingChallenge-FE)
-Live demo of the project [HERE](https://geocoding-markers-fe.herokuapp.com/)
 
 # Project Description
 
 This is a simple backend done with NodeJs and Express. 
 It contains the CRUD for creating Markers that will be lately displayed on the map and also save them on a DB using mongoose.
+Front end repository [HERE](https://github.com/MikeLunDev/geocodingChallenge-FE)<br>
+Live demo of the project [HERE](https://geocoding-markers-fe.herokuapp.com/)
 
 ## Running locally
 
