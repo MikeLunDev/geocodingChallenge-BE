@@ -4,19 +4,20 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const YAML = require("yamljs");
 const swaggerUI = require("swagger-ui-express");
-const {join} = require("path")
+const { join } = require("path");
 require("dotenv").config();
 const app = expess();
 
 const swaggerDocument = YAML.load(join(__dirname, "./apidocs.yaml"));
 
 app.set("port", process.env.PORT || 3055);
+//DOCS HERE https://geocoding-markers-be.herokuapp.com/docs/
 app.use("/docs", swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 app.use(expess.json());
 
 //white list for cors()
-var whitelist = [process.env.WHITE_LIST_ONLINE, process.env.WHITE_LIST_LOCAL];
-var corsOptions = {
+const whitelist = [process.env.WHITE_LIST_ONLINE, process.env.WHITE_LIST_LOCAL];
+const corsOptions = {
   origin: function(origin, callback) {
     if (whitelist.indexOf(origin) !== -1) {
       callback(null, true);
@@ -51,12 +52,12 @@ mongoose
   })
   .then(conn => {
     console.log("connected with", connectDbUri);
-    console.log(process.env.WHITE_LIST_ONLINE,process.env.WHITE_LIST_LOCAL)
+    console.log(process.env.WHITE_LIST_ONLINE, process.env.WHITE_LIST_LOCAL);
   })
   .catch(error => {
     console.log(error);
   });
-var connection = mongoose.connection;
+const connection = mongoose.connection;
 connection.once("open", function() {
   app.listen(app.get("port"), () => {
     console.log("running on", app.get("port"));
